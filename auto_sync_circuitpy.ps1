@@ -6,7 +6,7 @@ param (
 )
 
 # If you want to force mount your pico every run, here ya go, otherwise comment this out
-new-psdrive -root /Users/aask/testSync -Name CIRCUITPY -PSProvider filesystem
+#new-psdrive -root /Users/aask/testSync -Name CIRCUITPY -PSProvider filesystem
 
 if($(Get-ExecutionPolicy) -ne "Bypass"){
     Set-ExecutionPolicy Bypass -Scope CurrentUser -Force
