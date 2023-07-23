@@ -5,6 +5,7 @@ param (
     [switch]$as_job = $false
 )
 
+# If you want to force mount your pico every run, here ya go, otherwise comment this out
 new-psdrive -root /Users/aask/testSync -Name CIRCUITPY -PSProvider filesystem
 
 if($(Get-ExecutionPolicy) -ne "Bypass"){
@@ -46,7 +47,6 @@ function run_daemon()
 
         $root= $config.$_.config_root_folder
         $drive = $config.$_.device_drive
-        $sync_trigger_filename = $config.$_.sync_trigger_filename
         $ignore = $config.$_.ignore.Split(",")
         
         if (!(Test-Path $root)) {
@@ -69,10 +69,7 @@ function run_daemon()
                 "$($_)" = @{
                     "config_root_folder" = $root;
                     "file_list" = $file_name_list;
-                    "file_info" = $(Get-ChildItem $root\$sync_trigger_filename);
-                    "prev_file_info" = $(Get-ChildItem $root\$sync_trigger_filename);
                     "device_drive" = $drive
-                    "sync_trigger_filename" = $sync_trigger_filename
                     "name" = $_
                 }
             }
@@ -85,9 +82,6 @@ function run_daemon()
             $main_c_root = $main_file_list.$item
 
             Push-Location $main_c_root.config_root_folder
-
-            # TODO: Cleanup using a specific filename
-            # $sync_trigger_filename = $main_c_root.sync_trigger_filename
             
             $drive = $main_c_root.device_drive
             foreach($file in $main_c_root.file_list.Keys | Sort-Object){
