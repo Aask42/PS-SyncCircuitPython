@@ -41,8 +41,6 @@ function run_daemon()
 
     $main_file_list = @{}
 
-
-
     $config.Keys | ForEach-Object {
 
         $root= $config.$_.config_root_folder
